@@ -1,9 +1,13 @@
 import React from "react";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 const ClientLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const products = useSelector((state) => state.product.products);
+  console.log(products);
+
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <form
