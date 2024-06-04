@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
 
 const userSchema = new mongoose.Schema({
     role: {
@@ -30,11 +29,9 @@ const userSchema = new mongoose.Schema({
     avatar: {
         public_id: {
             type: String,
-            required: true,
         },
         url: {
             type: String,
-            required: true,
         },
     },
     createdAt: {
@@ -55,8 +52,8 @@ userSchema.pre("save", async function (next) {
 
 
 userSchema.methods.getJWTToken = function () {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE,
+    return jwt.sign({ _id: this._id }, process.env.ACCESS_SECRET_KEY, {
+        expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
     });
 };
 

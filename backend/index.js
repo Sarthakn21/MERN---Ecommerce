@@ -1,13 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: "backend/.env" });
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import dotenv from 'dotenv';
 import connectToDatabse from "./config/database.js";
 import fileUpload from "express-fileupload";
 import errorHandlerMiddleware from "./middlewares/error.js";
 import userRouter from "./Routes/userRoute.js";
 
-dotenv.config();
 const app = express();
 app.use(
     cors({
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-app.use('/api', userRouter)
+app.use('/api/v1/users', userRouter)
 
 app.use(express.static("public"));
 connectToDatabse();
