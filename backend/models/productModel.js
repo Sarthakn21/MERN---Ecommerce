@@ -41,6 +41,11 @@ const productSchema = new mongoose.Schema({
         maxLength: [4, "Cannot exceed 4 digit limit"],
         default: 1,
     },
+    size: {
+        type: [mongoose.Schema.Types.Mixed],
+    }
+
+    ,
     numOfReview: {
         type: Number,
         default: 0,
@@ -50,19 +55,19 @@ const productSchema = new mongoose.Schema({
             user: {
                 type: mongoose.Schema.ObjectId,
                 ref: "User",
-                required: true,
             },
             name: {
                 type: String,
-                required: true,
             },
             rating: {
                 type: Number,
-                required: true,
             },
             comment: {
                 type: String,
-                required: true,
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now,
             },
         },
     ],

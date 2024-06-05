@@ -3,7 +3,6 @@ import { upload } from "../middlewares/multerMiddleware.js";
 import { deleteUser, demo, getAllUsers, getCurrentUser, getSingleUser, loginUser, logoutUser, registerUser, updateProfile } from "../controllers/userController.js";
 import isAuthenticatedUser from "../middlewares/auth.js";
 
-
 const router = Router();
 router.route('/register').post(registerUser);
 router.route('/login').post(loginUser);
