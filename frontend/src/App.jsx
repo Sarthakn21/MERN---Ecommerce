@@ -1,18 +1,20 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import Example from "./Example";
+import Navbar2 from "./components/Navbar/Navbar2";
+import { Routes, Route } from "react-router-dom";
 import ClientLogin from "./components/login/ClientLogin";
-import BusinessLogin from "./components/login/BusinessLogin";
-import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <Navbar/>
-      {/* <ClientLogin /> */}
-      {/* <BusinessLogin /> */}
+      <Navbar2 />
+      <Routes>
+        <Route path="/" element={<Example />} />
+        <Route path="/login" element={<ClientLogin />} />
+
+      </Routes>
     </>
   );
 }

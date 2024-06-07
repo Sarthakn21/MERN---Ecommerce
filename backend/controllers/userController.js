@@ -45,7 +45,7 @@ const loginUser = catchAsyncError(async (req, res, next) => {
             secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
-        .json({ success: true, message: "user Loggedin successfully" });
+        .json({ success: true, message: "user Loggedin successfully", user });
 });
 const logoutUser = catchAsyncError(async (req, res, next) => {
     return res

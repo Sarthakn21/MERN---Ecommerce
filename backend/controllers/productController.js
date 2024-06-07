@@ -157,4 +157,6 @@ const getAllReviews = catchAsyncError(async (req, res, next) => {
         reviews: product.reviews,
     });
 })
+
+
 export { createProduct, getAllProducts, getProductById, deleteProduct, updateProduct, createReview, getAllReviews };
