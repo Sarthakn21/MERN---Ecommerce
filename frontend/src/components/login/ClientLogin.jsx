@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser } from "../../slice/authSlice";
+// import { loginUser, logoutUser, registerUser } from "../../slice/authSlice";
+import { getCurrentUser, loginUser, logoutUser, registerUser } from "../../actions/authActions";
 
 const ClientLogin = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,9 @@ const ClientLogin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
+    // dispatch(logoutUser());
+    // dispatch(getCurrentUser());
+    // dispatch(registerUser({ email: "shruti@gmail.com", password: "shruti@123", name: "shruti pawar" }))
   };
 
   useEffect(() => {
@@ -33,7 +37,7 @@ const ClientLogin = () => {
           </p>
         </div>
 
-        {/* {loading && (
+        {loading && (
           <div className="mb-4">
             <p className="text-gray-700 text-center">Loading...</p>
           </div>
@@ -43,7 +47,7 @@ const ClientLogin = () => {
           <div className="mb-4">
             <p className="text-red-500 text-center">Error: {message}</p>
           </div>
-        )} */}
+        )}
 
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="email">

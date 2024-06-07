@@ -13,6 +13,7 @@ const registerUser = catchAsyncError(async (req, res, next) => {
         password,
     });
     const accessToken = await user.getJWTToken();
+    const userWithoutPassword = await User.findById(user._id).select('-password');
     return res
         .status(200)
         .cookie("accessToken", accessToken, {
@@ -20,7 +21,7 @@ const registerUser = catchAsyncError(async (req, res, next) => {
             secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
-        .json({ success: true, message: "user registered successfully" });
+        .json({ success: true, message: "user registered successfully", user: userWithoutPassword });
 });
 
 const loginUser = catchAsyncError(async (req, res, next) => {
@@ -37,7 +38,7 @@ const loginUser = catchAsyncError(async (req, res, next) => {
         return next(new ApiError(401, "Invalid email or password"));
     }
     const accessToken = await user.getJWTToken();
-
+    const userWithoutPassword = await User.findById(user._id).select('-password');
     return res
         .status(200)
         .cookie("accessToken", accessToken, {
@@ -45,7 +46,7 @@ const loginUser = catchAsyncError(async (req, res, next) => {
             secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
-        .json({ success: true, message: "user Loggedin successfully", user });
+        .json({ success: true, message: "user Loggedin successfully", user: userWithoutPassword });
 });
 const logoutUser = catchAsyncError(async (req, res, next) => {
     return res

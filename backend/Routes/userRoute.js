@@ -6,7 +6,7 @@ import isAuthenticatedUser from "../middlewares/auth.js";
 const router = Router();
 router.route('/register').post(registerUser);
 router.route('/login').post(loginUser);
-router.route('/logout').get(logoutUser);
+router.route('/logout').get(isAuthenticatedUser, logoutUser);
 router.route('/getcurrentuser').get(isAuthenticatedUser, getCurrentUser);
 router.route('/getalluser').get(isAuthenticatedUser, getAllUsers);
 router.route('/getsingleuser/:id').get(isAuthenticatedUser, getSingleUser);
