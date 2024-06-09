@@ -8,14 +8,14 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <>
+    <div className="flex flex-col">
       <Navbar2 />
       <Routes>
         <Route path="/" element={<Example />} />
         <Route path="/login" element={<ClientLogin />} />
 
       </Routes>
-    </>
+    </div>
   );
 }
 
