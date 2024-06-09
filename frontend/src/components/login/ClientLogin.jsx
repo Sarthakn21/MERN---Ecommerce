@@ -16,6 +16,7 @@ const ClientLogin = () => {
     // dispatch(logoutUser());
     // dispatch(getCurrentUser());
     // dispatch(registerUser({ email: "shruti@gmail.com", password: "shruti@123", name: "shruti pawar" }))
+    
   };
 
   useEffect(() => {

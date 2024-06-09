@@ -7,7 +7,7 @@ import {
 } from '@headlessui/react';
 import { Link } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const Navbar2 = () => {
@@ -25,7 +25,7 @@ const Navbar2 = () => {
     ];
 
     return (
-        <nav className="bg-white shadow-md w-full">
+        <nav className="bg-white shadow-md w-full z-50">
             <header className="relative bg-white">
                 <div className="border-b border-gray-200">
                     <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -87,7 +87,7 @@ const Navbar2 = () => {
             </header>
             {/* Mobile menu */}
             <Transition show={isOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-40 lg:hidden" onClose={setIsOpen}>
+                <Dialog as="div" className="relative z-50 lg:hidden" onClose={setIsOpen}>
                     <TransitionChild
                         enter="transition-opacity ease-linear duration-300"
                         enterFrom="opacity-0"
