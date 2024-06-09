@@ -29,9 +29,9 @@ const Navbar2 = () => {
             <header className="relative bg-white">
                 <div className="border-b border-gray-200">
                     <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-                        <div className="flex ml-0">
+                        <Link to="/" className="flex ml-0">
                             <h2>Brand Bucket</h2>
-                        </div>
+                        </Link>
                         <div className="hidden md:flex items-center gap-5">
                             <div className=" flex flex-1 items-center justify-end space-x-6">
                                 {navigation.map((item, index) => (
@@ -42,13 +42,13 @@ const Navbar2 = () => {
                             </div>
                         </div>
                         <div className="hidden md:flex items-center gap-5">
-                                <div className="relative flex items-center">
-                                    <input
-                                        type="text"
-                                        className="block w-full py-2 pl-3 pr-10 text-sm leading-5 bg-white border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
-                                        placeholder="Search..."
-                                    />
-                                </div>
+                            <div className="relative flex items-center">
+                                <input
+                                    type="text"
+                                    className="block w-full py-2 pl-3 pr-10 text-sm leading-5 bg-white border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
+                                    placeholder="Search..."
+                                />
+                            </div>
                             <div className=" flex flex-1 items-center justify-end space-x-6">
                                 <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                     Sign in

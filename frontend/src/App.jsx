@@ -11,18 +11,20 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="flex flex-col">
-      <Navbar2 />
+    <>
+      <div className="flex flex-col">
+        <Navbar2 />
 
-      <Routes>
-        <Route path="/" element={<HeroSection />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/example" element={<Example />} />
-        <Route path="/login" element={<ClientLogin />} />
+        <Routes>
+          <Route path="/" element={<HeroSection />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/example" element={<Example />} />
+          <Route path="/login" element={<ClientLogin />} />
 
-      </Routes>
-      <Example />
-      <FeatureItem />
+        </Routes>
+        {/* <Example />
+        <FeatureItem /> */}
+      </div>
     </>
   );
 }
