@@ -6,25 +6,27 @@ import ClientLogin from "./components/login/ClientLogin";
 import HeroSection from "./components/Hero/HeroSection";
 import Shop from "./components/Hero/Shop";
 import FeatureItem from "./components/Product/Featured";
+import ProductDetails from "./components/Product/ProductDetails";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <div className="flex flex-col">
-        <Navbar2 />
 
-        <Routes>
-          <Route path="/" element={<HeroSection />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/example" element={<Example />} />
-          <Route path="/login" element={<ClientLogin />} />
+      <Navbar2 />
 
-        </Routes>
-        {/* <Example />
+      <Routes>
+        <Route path="/" element={<HeroSection />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/men" element={<Example />} />
+        <Route path="/login" element={<ClientLogin />} />
+
+      </Routes>
+      <ProductDetails />
+      {/* <Example />
         <FeatureItem /> */}
-      </div>
+
     </>
   );
 }
