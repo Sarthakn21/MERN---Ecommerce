@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup } from '@headlessui/react'
 import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRounded';
@@ -65,7 +65,25 @@ export default function ProductDetails() {
     const [selectedColor, setSelectedColor] = useState(product.colors[0])
     const [selectedSize, setSelectedSize] = useState(product.sizes[2])
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [touchStartX, setTouchStartX] = useState(null);
+    const touchRef = useRef(null);
+    const handleTouchStart = (event) => {
+        setTouchStartX(event.touches[0].clientX);
+    };
+    const handleTouchMove = (event) => {
+        if (!touchStartX || !touchRef.current) return;
 
+        const touchCurrentX = event.touches[0].clientX;
+        const diffX = touchStartX - touchCurrentX;
+        if (Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                handleNextImage();
+            } else {
+                handlePreviousImage();
+            }
+            setTouchStartX(null);
+        }
+    };
     const handleNextImage = () => {
         setCurrentImageIndex((currentImageIndex + 1) % product.images.length)
     }
@@ -78,7 +96,10 @@ export default function ProductDetails() {
         <div className="bg-white py-16">
             <div className="pt-6 flex flex-col  lg:flex-row">
                 <div className="mx-auto mt-2 md:max-w-7xl md:px-8 md:py-5">
-                    <div className="relative h-[400px] w-[100%] md:h-[500px] md:w-[500px] rounded-xl overflow-hidden aspect-h-4 aspect-w-3">
+                    <div onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        ref={touchRef}
+                        className="relative h-[400px] w-[100%] md:h-[500px] md:w-[500px] rounded-xl overflow-hidden aspect-h-4 aspect-w-3 transition-transform duration-300">
                         <img
                             src={product.images[currentImageIndex].src}
                             alt={product.images[currentImageIndex].alt}
@@ -101,17 +122,12 @@ export default function ProductDetails() {
                     </div>
 
                 </div>
-
-
-                {/* Product info */}
                 <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
                     <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
                     </div>
                     <div className="mt-4 lg:row-span-3 lg:mt-0">
                         <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
-
-                        {/* Reviews */}
                         <div className="mt-6">
                             <div className="flex items-center">
                                 <div className="flex items-center">
@@ -133,7 +149,6 @@ export default function ProductDetails() {
                         </div>
 
                         <form className="mt-10">
-                            {/* Sizes */}
                             <div className="mt-10">
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-sm font-medium text-gray-900">Size</h3>
@@ -208,10 +223,7 @@ export default function ProductDetails() {
                     </div>
 
                     <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-                        {/* Description and details */}
                         <div>
-                            <h3 className="sr-only">Description</h3>
-
                             <div className="space-y-6">
                                 <p className="text-base text-gray-900">{product.description}</p>
                             </div>
