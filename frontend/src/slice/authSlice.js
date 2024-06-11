@@ -3,10 +3,10 @@ import axios from 'axios';
 import { getCurrentUser, loginUser, logoutUser, registerUser } from "../actions/authActions";
 
 
-
+const localItem = localStorage.getItem('authUser')
 const initialState = {
-    user: null,
-    isAuthenticated: false,
+    user: localItem ? JSON.parse(localItem) : null,
+    isAuthenticated: localItem ? true : false,
     loading: false,
     error: null,
     message: null,
@@ -28,6 +28,7 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.message = null;
+                localStorage.setItem("authUser", JSON.stringify(action.payload));
             })
             .addCase(loginUser.rejected, (state, action) => {
                 console.log("error occured", action.payload)
@@ -47,6 +48,7 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.message = "Logout successfull"
+                localStorage.removeItem("authUser");
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 state.error = action.payload;
@@ -89,6 +91,7 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.message = null;
+                localStorage.setItem("authUser", JSON.stringify(action.payload));
             })
             .addCase(getCurrentUser.rejected, (state, action) => {
                 state.error = action.payload;

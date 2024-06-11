@@ -7,21 +7,20 @@ const ClientLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { loading, error, message } = useSelector((state) => state.auth);
+  const { loading, error, message, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
     // dispatch(logoutUser());
     // dispatch(getCurrentUser());
     // dispatch(registerUser({ email: "shruti@gmail.com", password: "shruti@123", name: "shruti pawar" }))
-    
+
   };
 
   useEffect(() => {
+    console.log("Message from Redux state:", user);
     if (message) {
-      console.log("Message from Redux state:", message);
     }
   }, [message]);
 
