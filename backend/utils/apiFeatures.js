@@ -17,13 +17,23 @@ class ApiFeatures {
     }
     filter() {
         const queryCopy = { ...this.queryStr };
-        const removeFeilds = ["keyword", "page", "limit"];
-        removeFeilds.forEach((key) => delete queryCopy[key]);
+        const removeFields = ["keyword", "page", "limit"];
+        removeFields.forEach((key) => delete queryCopy[key]);
+        const categoryFilter = {};
+        if (queryCopy.mainCategory) {
+            categoryFilter['category.main'] = queryCopy.mainCategory.trim().toLowerCase();
+            delete queryCopy.mainCategory;
+        }
+        if (queryCopy.subCategory) {
+            categoryFilter['category.sub'] = queryCopy.subCategory.trim().toLowerCase();
+            delete queryCopy.subCategory;
+        }
+
         let queryStr = JSON.stringify(queryCopy);
-
         queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
+        const parsedQuery = JSON.parse(queryStr);
+        this.query = this.query.find({ ...categoryFilter, ...parsedQuery });
 
-        this.query = this.query.find(JSON.parse(queryStr));
         return this;
     }
 

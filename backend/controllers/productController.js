@@ -8,13 +8,13 @@ import cloudinary from "cloudinary";
 
 const createProduct = catchAsyncError(async (req, res, next) => {
     const images = [];
-    const { name, description, price, stock, category } = req.body;
+    const { name, description, price, stock, mainCategory, subCategory } = req.body;
     // console.log(req.body.size)
     if (!req.files || req.files.length === 0) {
         return next(new ApiError(401, "Images are required"));
     }
 
-    if (!name || !description || !price || !stock || !category) {
+    if (!name || !description || !price || !stock || !mainCategory) {
         return next(new ApiError(400, "Name, description, price, stock,ratings,category are required"));
     }
 
@@ -32,6 +32,10 @@ const createProduct = catchAsyncError(async (req, res, next) => {
 
     req.body.images = imageLinks;
     req.body.user = req.user._id;
+    req.body.category = {
+        main: mainCategory.toLowerCase(),
+        ...(subCategory ? { sub: subCategory.toLowerCase() } : {})
+    };
 
     const product = await Product.create(req.body);
     res.status(201).json({
@@ -51,6 +55,7 @@ const getAllProducts = async (req, res, next) => {
         if (products.length == 0) return next(new ApiError(404, "Product not found"))
         res.status(200).json({
             success: true,
+            totalFetched: products.length,
             products
 
         });
