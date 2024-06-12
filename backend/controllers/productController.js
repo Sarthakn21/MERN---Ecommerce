@@ -163,5 +163,27 @@ const getAllReviews = catchAsyncError(async (req, res, next) => {
     });
 })
 
+const getCategoryProduct = catchAsyncError(async (req, res, next) => {
+    try {
+        const mainCategories = await Product.distinct("category.main");
+        const product = {};
+        for (const mainCategory of mainCategories) {
+            const products = await Product.find({ "category.main": mainCategory }).limit(4).select('-reviews');
+            product[mainCategory] = products;
+        }
 
-export { createProduct, getAllProducts, getProductById, deleteProduct, updateProduct, createReview, getAllReviews };
+        const totalFetched = Object.values(product).reduce((sum, products) => sum + products.length, 0);
+        if (totalFetched === 0) return next(new ApiError(404, "Products not found"));
+        res.status(200).json({
+            success: true,
+            totalFetched,
+            product
+        });
+    } catch (error) {
+        return next(new ApiError(500, "Products not found"));
+    }
+});
+
+
+
+export { createProduct, getAllProducts, getProductById, deleteProduct, updateProduct, createReview, getAllReviews, getCategoryProduct };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { loginUser, logoutUser, registerUser } from "../../slice/authSlice";
-import { getCurrentUser, loginUser, logoutUser, registerUser } from "../../actions/authActions";
+import { getCurrentUser, loginUser, logoutUser, registerUser, updateProfile } from "../../actions/authActions";
 
 const ClientLogin = () => {
   const [email, setEmail] = useState("");
@@ -11,11 +11,11 @@ const ClientLogin = () => {
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
+    // dispatch(loginUser({ email, password }));
     // dispatch(logoutUser());
     // dispatch(getCurrentUser());
     // dispatch(registerUser({ email: "shruti@gmail.com", password: "shruti@123", name: "shruti pawar" }))
-
+    dispatch(updateProfile({ name: "aarti sathe", email: "aartisathe212@gmail.com" }))
   };
 
   useEffect(() => {

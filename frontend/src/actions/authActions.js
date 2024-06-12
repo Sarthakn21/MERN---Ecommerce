@@ -6,7 +6,6 @@ export const loginUser = createAsyncThunk('loginUser', async (credentials, { rej
         const response = await axios.post('http://localhost:5000/api/v1/users/login', credentials, {
             withCredentials: true
         })
-        // console.log(response.data.user)
         return response.data.user
     } catch (error) {
         return rejectWithValue(error.response.data)
@@ -40,6 +39,18 @@ export const getCurrentUser = createAsyncThunk('getCurrentUser', async (_, { rej
             withCredentials: true
         })
         console.log("current user response", response.data.user)
+        return response.data.user
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+export const updateProfile = createAsyncThunk('updateProfile', async (data, { rejectWithValue }) => {
+    try {
+        console.log("this is data on update profile", data)
+        const response = await axios.put('http://localhost:5000/api/v1/users/updateprofile', data, {
+            withCredentials: true
+        })
+        console.log("updateProfile response", response.data.user)
         return response.data.user
     } catch (error) {
         return rejectWithValue(error.response.data)

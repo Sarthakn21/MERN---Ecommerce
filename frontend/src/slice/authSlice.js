@@ -1,22 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from 'axios';
-import { getCurrentUser, loginUser, logoutUser, registerUser } from "../actions/authActions";
+import axios from "axios";
+import {
+    getCurrentUser,
+    loginUser,
+    logoutUser,
+    registerUser,
+    updateProfile,
+} from "../actions/authActions";
 
-
-const localItem = localStorage.getItem('authUser')
+const localItem = localStorage.getItem("authUser");
 const initialState = {
     user: localItem ? JSON.parse(localItem) : null,
     isAuthenticated: localItem ? true : false,
     loading: false,
     error: null,
     message: null,
-}
+};
 export const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.pending, (state) => {
@@ -28,16 +31,18 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.message = null;
+                // console.log("inauth slice", action.payload)
                 localStorage.setItem("authUser", JSON.stringify(action.payload));
             })
             .addCase(loginUser.rejected, (state, action) => {
-                console.log("error occured", action.payload)
                 state.error = action.payload;
                 state.loading = false;
                 state.isAuthenticated = false;
                 state.user = null;
                 state.message = action.payload.message;
+                // console.log("error occured", action.payload);
 
+                console.log("inrejectd user", action.payload)
             })
             .addCase(logoutUser.pending, (state, action) => {
                 state.loading = true;
@@ -47,7 +52,7 @@ export const authSlice = createSlice({
                 state.isAuthenticated = false;
                 state.loading = false;
                 state.error = null;
-                state.message = "Logout successfull"
+                state.message = "Logout successfull";
                 localStorage.removeItem("authUser");
             })
             .addCase(logoutUser.rejected, (state, action) => {
@@ -61,7 +66,7 @@ export const authSlice = createSlice({
                 state.message = null;
                 state.isAuthenticated = false;
                 state.user = null;
-                console.log("in register user pending state")
+                // console.log("in register user pending state")
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.user = action.payload;
@@ -69,7 +74,7 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.message = action.payload.message;
-                console.log("in register user fulfilled state")
+                // console.log("in register user fulfilled state")
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.error = action.payload;
@@ -77,13 +82,12 @@ export const authSlice = createSlice({
                 state.message = action.payload.message;
                 state.isAuthenticated = false;
                 state.user = null;
-                console.log("in register user rejected state")
+                console.log("in register user rejected state", action.payload);
             })
             .addCase(getCurrentUser.pending, (state, action) => {
                 state.loading = true;
                 state.error = null;
                 state.message = null;
-
             })
             .addCase(getCurrentUser.fulfilled, (state, action) => {
                 state.user = action.payload;
@@ -99,8 +103,27 @@ export const authSlice = createSlice({
                 state.message = action.payload.message;
                 state.isAuthenticated = false;
                 state.user = null;
+                localStorage.removeItem("authUser");
+            })
+            .addCase(updateProfile.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+                state.message = null;
+            })
+            .addCase(updateProfile.fulfilled, (state, action) => {
+                state.user = action.payload;
+                state.isAuthenticated = true;
+                state.loading = false;
+                state.error = null;
+                state.message = action.payload.message;
+                localStorage.setItem("authUser", JSON.stringify(action.payload));
+            })
+            .addCase(updateProfile.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+                state.message = action.payload.message;
             })
     },
-})
+});
 export const { } = authSlice.actions;
 export default authSlice.reducer;
