@@ -2,20 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { loginUser, logoutUser, registerUser } from "../../slice/authSlice";
 import { getCurrentUser, loginUser, logoutUser, registerUser, updateProfile } from "../../actions/authActions";
+import { deleteProduct, getAllProducts, getProductById, updateProduct } from "../../actions/productActions";
 
 const ClientLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [id, setId] = useState("");
   const { loading, error, message, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const product = {
+    _id: "6660258e17f648e9e69a5ff7", // Assuming you have user._id accessible in your auth state
+    name: "Addidas 130622"
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     // dispatch(loginUser({ email, password }));
     // dispatch(logoutUser());
     // dispatch(getCurrentUser());
     // dispatch(registerUser({ email: "shruti@gmail.com", password: "shruti@123", name: "shruti pawar" }))
-    dispatch(updateProfile({ name: "aarti sathe", email: "aartisathe212@gmail.com" }))
+    // dispatch(updateProfile({ name: "aarti sathe", email: "aartisathe212@gmail.com" }))
+    // dispatch(getAllProducts());
+    // dispatch(getProductById("66604ddfe659659f4e51d569"))
+    // dispatch(deleteProduct("6669fbff17132ffdd2e0d73b"))
+    dispatch(updateProduct(product));
   };
 
   useEffect(() => {

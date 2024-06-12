@@ -47,10 +47,11 @@ const createProduct = catchAsyncError(async (req, res, next) => {
 //get all product by filters and pagination
 const getAllProducts = async (req, res, next) => {
     try {
+        const limit = req.query.limit ? req.query.limit : 10;
         const apiFeatures = new ApiFeatures(Product.find(), req.query)
             .search()
             .filter()
-            .pagination(10);
+            .pagination(limit);
         const products = await apiFeatures.query;
         if (products.length == 0) return next(new ApiError(404, "Product not found"))
         res.status(200).json({
@@ -80,7 +81,7 @@ const deleteProduct = catchAsyncError(async (req, res, next) => {
         await cloudinary.v2.uploader.destroy(image.public_id)
     })
     await product.deleteOne();
-    res.status(200).json({ success: true, message: "Product deleted successfully" })
+    res.status(200).json({ success: true, message: "Product deleted successfully", productId: req.params.id })
 });
 
 //update product

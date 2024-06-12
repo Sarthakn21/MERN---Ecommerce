@@ -6,7 +6,7 @@ const router = Router()
 
 router.route('/create').post(isAuthenticatedUser, upload.array('file', 4), createProduct)
 router.route('/updateproduct/:id').patch(isAuthenticatedUser, upload.array('file', 4), updateProduct)
-router.route('/getproducts').get(getAllProducts)
+router.route('/getproducts').get(isAuthenticatedUser, getAllProducts)
 router.route('/getproducts/:id').get(getProductById)
 router.route('/deleteproduct/:id').delete(isAuthenticatedUser, deleteProduct)
 router.route('/addreview').post(isAuthenticatedUser, createReview)
