@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteProduct, getAllProducts, getProductById, updateProduct } from "../actions/productActions";
+import { addReview, categoryWiseProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../actions/productActions";
 
 
 const initialState = {
@@ -78,6 +78,48 @@ export const productSlice = createSlice({
             .addCase(updateProduct.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            .addCase(addReview.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addReview.fulfilled, (state, action) => {
+                state.loading = false;
+                // console.log("action payload: " + action.payload.product._id);
+                if (state.products.length > 0) {
+                    state.products = state.products.map(product => product._id === action.payload.product._id ? action.payload.product : product)
+                } else {
+                    state.products.push(action.payload.product)
+                    state.totalProducts = state.totalProducts + 1;
+                }
+                state.error = null;
+            })
+            .addCase(addReview.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.totalProducts = state.products.length;
+            })
+            .addCase(categoryWiseProduct.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(categoryWiseProduct.fulfilled, (state, action) => {
+                state.loading = false;
+                state.totalProducts = action.payload.totalFetched;
+                const transformedProducts = [];
+                Object.keys(action.payload.product).forEach(category => {
+                    transformedProducts.push({
+                        category,
+                        items: action.payload.product[category],
+                    });
+                });
+
+                state.products = transformedProducts;
+            })
+            .addCase(categoryWiseProduct.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.totalProducts = state.products.length;
             })
     }
 })

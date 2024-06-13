@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { loginUser, logoutUser, registerUser } from "../../slice/authSlice";
 import { getCurrentUser, loginUser, logoutUser, registerUser, updateProfile } from "../../actions/authActions";
-import { deleteProduct, getAllProducts, getProductById, updateProduct } from "../../actions/productActions";
+import { addReview, categoryWiseProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../../actions/productActions";
 
 const ClientLogin = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +14,11 @@ const ClientLogin = () => {
     _id: "6660258e17f648e9e69a5ff7", // Assuming you have user._id accessible in your auth state
     name: "Addidas 130622"
   };
+  const details = {
+    "productId": "6669a6bf713ea089c4d31060",
+    "comment": "!.just bought today,fully satisfied by it",
+    "rating": 4.5
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     // dispatch(loginUser({ email, password }));
@@ -24,7 +29,9 @@ const ClientLogin = () => {
     // dispatch(getAllProducts());
     // dispatch(getProductById("66604ddfe659659f4e51d569"))
     // dispatch(deleteProduct("6669fbff17132ffdd2e0d73b"))
-    dispatch(updateProduct(product));
+    // dispatch(updateProduct(product));
+    // dispatch(addReview(details));
+    dispatch(categoryWiseProduct());
   };
 
   useEffect(() => {

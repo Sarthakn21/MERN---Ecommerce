@@ -50,3 +50,22 @@ export const updateProduct = createAsyncThunk('product/update', async (product, 
         return rejectWithValue(error.response.data);
     }
 })
+
+export const addReview = createAsyncThunk('product/addReview', async (details, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.post('product/addreview', details)
+        console.log("reviev added", data)
+        return data
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+})
+export const categoryWiseProduct = createAsyncThunk('product/categoryWiseProduct', async (_, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.get('product/getcategoryproduct')
+        console.log(data)
+        return data
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+})
