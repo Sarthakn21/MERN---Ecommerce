@@ -8,6 +8,7 @@ import fileUpload from "express-fileupload";
 import errorHandlerMiddleware from "./middlewares/error.js";
 import userRouter from "./Routes/userRoute.js";
 import productRoute from "./Routes/productRoute.js";
+import cartRoute from "./Routes/cartRoute.js"
 
 const app = express();
 app.use(
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/product', productRoute)
+app.use('/api/v1/cart', cartRoute)
 
 app.use(express.static("public"));
 connectToDatabse();

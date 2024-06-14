@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import { loginUser, logoutUser, registerUser } from "../../slice/authSlice";
 import { getCurrentUser, loginUser, logoutUser, registerUser, updateProfile } from "../../actions/authActions";
 import { addReview, categoryWiseProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../../actions/productActions";
+import { addToCart, deleteItem, getCart, updateCart } from "../../actions/cartActions";
 
 const ClientLogin = () => {
   const [email, setEmail] = useState("");
@@ -26,12 +27,25 @@ const ClientLogin = () => {
     // dispatch(getCurrentUser());
     // dispatch(registerUser({ email: "shruti@gmail.com", password: "shruti@123", name: "shruti pawar" }))
     // dispatch(updateProfile({ name: "aarti sathe", email: "aartisathe212@gmail.com" }))
+
     // dispatch(getAllProducts());
     // dispatch(getProductById("66604ddfe659659f4e51d569"))
     // dispatch(deleteProduct("6669fbff17132ffdd2e0d73b"))
     // dispatch(updateProduct(product));
     // dispatch(addReview(details));
-    dispatch(categoryWiseProduct());
+    // dispatch(categoryWiseProduct());/
+    // dispatch(addToCart({
+    //   productId: "66617e882f8760f497c651a1"
+    // }))
+    // dispatch(getCart());
+    // dispatch(updateCart(
+    //   {
+    //     productId: "66617e882f8760f497c651a1",
+    //     quantity: 99
+    //   }
+    // ))
+    // dispatch(deleteItem("66617e882f8760f497c651a1"))
+
   };
 
   useEffect(() => {
