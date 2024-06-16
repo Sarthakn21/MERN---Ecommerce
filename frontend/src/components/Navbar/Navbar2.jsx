@@ -22,13 +22,14 @@ const Navbar2 = () => {
         { name: "Men", href: "/men" },
         { name: "Women", href: "/women" },
         { name: "Kids", href: "/kids" },
+        { name: "Register", href: "/register" },
     ];
 
     return (
         <nav className="bg-white shadow-md w-full z-50 fixed">
             <header className="relative bg-white">
                 <div className="border-b border-gray-200">
-                    <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+                    <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 gap-11">
                         <Link to="/" className="flex ml-0">
                             <h2>Brand Bucket</h2>
                         </Link>
@@ -41,24 +42,21 @@ const Navbar2 = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="hidden md:flex items-center gap-5">
-                            <div className="relative flex items-center">
+                        <div className="flex items-center gap-5">
+                            <div className="hidden md:flex relative items-center">
                                 <input
                                     type="text"
                                     className="block w-full py-2 pl-3 pr-10 text-sm leading-5 bg-white border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
                                     placeholder="Search..."
                                 />
                             </div>
-                            <div className=" flex flex-1 items-center justify-end space-x-6">
+                            <div className="hidden lg:flex flex-1 items-center justify-end space-x-6">
                                 <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                     Sign in
                                 </Link>
                                 <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                                <Link to="/register" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                    Create account
-                                </Link>
                             </div>
-                            <div className="ml-4 flow-root px-2 py-1 mr-2">
+                            <div className="flow-root px-2 py-1 mr-0">
                                 <a href="/cart" className="group -m-2 flex items-center p-2">
                                     <ShoppingBagIcon
                                         className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
@@ -68,22 +66,9 @@ const Navbar2 = () => {
                                     <span className="sr-only">items in cart, view bag</span>
                                 </a>
                             </div>
-                        </div>
-                        <div className="flex md:hidden">
-                            <Link to="/cart">
-                                <div className="ml-4 flow-root bg-gray-100 rounded-lg px-2 py-1 mr-2">
-                                    <a className="group -m-2 flex items-center p-2">
-                                        <ShoppingBagIcon
-                                            className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                                            aria-hidden="true"
-                                        />
-                                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                                    </a>
-                                </div>
-                            </Link>
                             <button
                                 id="menu-toggle"
-                                className="md:hidden"
+                                className=""
                                 onClick={toggleMenu}
                             >
                                 <Bars3Icon className="w-6 h-6" aria-hidden="true" />
@@ -94,7 +79,7 @@ const Navbar2 = () => {
             </header>
             {/* Mobile menu */}
             <Transition show={isOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-50 lg:hidden" onClose={setIsOpen}>
+                <Dialog as="div" className="relative z-50 " onClose={setIsOpen}>
                     <TransitionChild
                         enter="transition-opacity ease-linear duration-300"
                         enterFrom="opacity-0"
