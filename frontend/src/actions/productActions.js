@@ -15,9 +15,25 @@ export const createProduct = createAsyncThunk('product/create', async (product, 
         return rejectWithValue(error.response.data)
     }
 })
-export const getAllProducts = createAsyncThunk('product/getAll', async (details, { rejectWithValue }) => {
+export const getAllProducts = createAsyncThunk('product/getAll', async (filters, { rejectWithValue }) => {
     try {
-        const { data } = await axiosInstance.get('product/getproducts?')
+        const {
+            category = "",
+            subcategory,
+            price = [0, 25000],
+            ratings = 0,
+            keyword,
+        } = filters;
+        let url = `http://localhost:5000/api/v1/product/getproducts?mainCategory=${category}s&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`
+        if (keyword) {
+            url += `&keyword=${keyword}`
+        }
+        if (subcategory) {
+            url += `&subCategory=${subcategory}`
+        }
+        const { data } = await axios.get(url, {
+            withCredentials: true,
+        })
         return data
     } catch (error) {
         return rejectWithValue(error.response.data)

@@ -13,13 +13,11 @@ function App() {
 
   return (
     <>
-
       <Navbar2 />
-
       <Routes>
-        <Route path="/" element={<HeroSection />} />
+        <Route path="/" element={<ClientLogin />} />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/men" element={<Example />} />
+        <Route path="product/:category" element={<Example />} />
         <Route path="/login" element={<ClientLogin />} />
 
       </Routes>

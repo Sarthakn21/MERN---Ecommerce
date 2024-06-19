@@ -22,7 +22,7 @@ const ClientLogin = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    // dispatch(loginUser({ email, password }));
+    dispatch(loginUser({ email, password }));
     // dispatch(logoutUser());
     // dispatch(getCurrentUser());
     // dispatch(registerUser({ email: "shruti@gmail.com", password: "shruti@123", name: "shruti pawar" }))

@@ -34,6 +34,7 @@ export const productSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
                 state.totalProducts = 0;
+                state.products = [];
             })
             .addCase(getProductById.pending, (state, action) => {
                 state.loading = true;

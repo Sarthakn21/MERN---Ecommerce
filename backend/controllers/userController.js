@@ -25,6 +25,7 @@ const registerUser = catchAsyncError(async (req, res, next) => {
 });
 
 const loginUser = catchAsyncError(async (req, res, next) => {
+    console.log(req)
     const { email, password } = req.body;
     if (!email || !password) {
         return next(new ApiError(400, "Please Enter Email & Password"));
@@ -44,6 +45,7 @@ const loginUser = catchAsyncError(async (req, res, next) => {
         .cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: true,
+            sameSite: 'None',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
         .json({ success: true, message: "user Loggedin successfully", user: userWithoutPassword });

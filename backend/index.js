@@ -4,19 +4,18 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectToDatabse from "./config/database.js";
-import fileUpload from "express-fileupload";
 import errorHandlerMiddleware from "./middlewares/error.js";
 import userRouter from "./Routes/userRoute.js";
 import productRoute from "./Routes/productRoute.js";
 import cartRoute from "./Routes/cartRoute.js"
 
 const app = express();
-app.use(
-    cors({
-        origin: "http://localhost:5173",
-        credentials: true,
-    })
-);
+const corsOptions = {
+    origin: true,
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 

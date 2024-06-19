@@ -47,6 +47,7 @@ const createProduct = catchAsyncError(async (req, res, next) => {
 //get all product by filters and pagination
 const getAllProducts = async (req, res, next) => {
     try {
+        
         const limit = req.query.limit ? req.query.limit : 10;
         const apiFeatures = new ApiFeatures(Product.find(), req.query)
             .search()
