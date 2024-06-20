@@ -6,6 +6,7 @@ const initialState = {
     cartItems: localCart ? JSON.parse(localCart) : [],
     loading: false,
     error: null,
+    CartSuccess: false,
 }
 const saveStateLS = (state) => {
     localStorage.setItem('cart', JSON.stringify(state));
@@ -27,20 +28,24 @@ export const cartSlice = createSlice({
                 }
                 state.error = null;
                 saveStateLS(state.cartItems);
+                state.CartSuccess = true;
             })
             .addCase(addToCart.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+                state.CartSuccess = false;
             })
             .addCase(getCart.fulfilled, (state, action) => {
                 state.cartItems = action.payload.cartItems;
                 state.loading = false;
                 state.error = null;
                 saveStateLS(state.cartItems);
+                state.CartSuccess = true;
             })
             .addCase(getCart.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
+                state.CartSuccess = false;
             })
             .addCase(updateCart.fulfilled, (state, action) => {
                 state.loading = false;
@@ -52,24 +57,29 @@ export const cartSlice = createSlice({
                 );
                 state.error = null;
                 saveStateLS(state.cartItems);
+                state.CartSuccess = true;
             })
             .addCase(updateCart.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+                state.CartSuccess = false;
             })
             .addCase(deleteItem.fulfilled, (state, action) => {
                 state.loading = false;
                 state.cartItems = state.cartItems.filter(item => item.productId !== action.payload);
                 state.error = null;
                 saveStateLS(state.cartItems);
+                state.CartSuccess = true;
             })
             .addCase(deleteItem.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+                state.CartSuccess = false;
             })
             .addMatcher(isAnyOf(addToCart.pending, getCart.pending, updateCart.pending, deleteItem.pending), (state) => {
                 state.loading = true;
                 state.error = null;
+                state.CartSuccess = false;
             })
     }
 })

@@ -16,7 +16,7 @@ const addToCart = catchAsyncError(async (req, res, next) => {
     if (!product) {
         return next(new ApiError(404, "Product not found"));
     }
-    if (product.stock <= 0) {
+    if (product && product.stock <= 0) {
         return next(new ApiError(404, "Product is out of stock"));
     }
 

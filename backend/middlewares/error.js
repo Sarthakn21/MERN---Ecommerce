@@ -22,6 +22,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
         const message = `Json web token is expired, try again`;
         err = new ApiError(400, message);
     }
+    console.log(err)
 
     res.status(err.statusCode).json({
         statusCode: err.statusCode,

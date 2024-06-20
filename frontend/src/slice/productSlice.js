@@ -12,8 +12,9 @@ export const productSlice = createSlice({
     name: "product",
     initialState,
     reducers: {
-        addProduct: (state, action) => {
-            state.products.push(action.payload)
+        clearError: (state, action) => {
+            state.loading = false;
+            state.error = null;
         },
         removeProduct: (state, action) => {
             state.products = state.products.filter(product => product.id !== action.payload)
@@ -43,7 +44,7 @@ export const productSlice = createSlice({
             })
             .addCase(getProductById.fulfilled, (state, action) => {
                 state.loading = false;
-                state.products = action.payload.product;
+                state.products.push(action.payload.product);
                 state.error = null;
                 state.totalProducts = 1;
             })
@@ -124,5 +125,5 @@ export const productSlice = createSlice({
             })
     }
 })
-export const { addProduct, removeProduct } = productSlice.actions;
+export const { clearError, removeProduct } = productSlice.actions;
 export default productSlice.reducer;

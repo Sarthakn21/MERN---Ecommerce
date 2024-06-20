@@ -8,10 +8,13 @@ import {
 import { Link } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useSelector } from "react-redux";
 
 
 const Navbar2 = () => {
+    const { loading, error, cartItems } = useSelector((state) => state.cart);
     const [isOpen, setIsOpen] = useState(false);
+    const [cartCount,setCartCount] = useState(0);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -62,8 +65,8 @@ const Navbar2 = () => {
                                         className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                         aria-hidden="true"
                                     />
-                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                                    <span className="sr-only">items in cart, view bag</span>
+                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartItems.length}</span>
+
                                 </a>
                             </div>
                             <button

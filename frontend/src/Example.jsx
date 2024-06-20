@@ -1,25 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 import { useParams } from "react-router-dom";
 import ProductCard from "./components/Product/ProductCard";
 import { useSelector, useDispatch } from "react-redux";
-
 import Slider from "@mui/material/Slider";
-import {
-    Dialog,
-    DialogPanel,
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    Transition,
-    TransitionChild,
-} from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { getAllProducts } from "./actions/productActions";
 
 const products = [
