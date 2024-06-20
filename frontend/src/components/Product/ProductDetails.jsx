@@ -108,16 +108,15 @@ export default function ProductDetails() {
         }
     };
     const handleNextImage = () => {
-        setCurrentImageIndex((currentImageIndex + 1) % products.images.length)
+        setCurrentImageIndex((currentImageIndex + 1) % products[0].images.length)
     }
 
     const handlePreviousImage = () => {
-        setCurrentImageIndex((currentImageIndex - 1 + products.images.length) % products.images.length)
+        setCurrentImageIndex((currentImageIndex - 1 + products[0].images.length) % products[0].images.length)
     }
     const handleAddToCart = (event) => {
         event.preventDefault();
         dispatch(addToCart({ productId }));
-        // enqueueSnackbar("Product added to cart", { variant: "success" });
     };
     useEffect(() => {
         dispatch(getProductById(productId))

@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 const Navbar2 = () => {
     const { loading, error, cartItems } = useSelector((state) => state.cart);
     const [isOpen, setIsOpen] = useState(false);
-    const [cartCount,setCartCount] = useState(0);
+    const [cartCount, setCartCount] = useState(0);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -23,8 +23,8 @@ const Navbar2 = () => {
     const navigation = [
         { name: "Home", href: "/" },
         { name: "Men", href: "/product/men" },
-        { name: "Women", href: "/women" },
-        { name: "Kids", href: "/kids" },
+        { name: "Women", href: "/product/women" },
+        { name: "Kids", href: "/product/kid" },
         { name: "Register", href: "/register" },
     ];
 

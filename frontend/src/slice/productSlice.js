@@ -13,8 +13,9 @@ export const productSlice = createSlice({
     initialState,
     reducers: {
         clearError: (state, action) => {
-            state.loading = false;
+            // state.loading = false;
             state.error = null;
+            console.log(state)
         },
         removeProduct: (state, action) => {
             state.products = state.products.filter(product => product.id !== action.payload)

@@ -24,8 +24,8 @@ function App() {
 
       </Routes>
       {/* <ProductDetails />
-      <Example />
-      <FeatureItem /> */}
+      <Example /> */}
+      {/* <FeatureItem /> */}
 
     </>
   );
