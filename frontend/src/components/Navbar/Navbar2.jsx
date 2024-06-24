@@ -29,7 +29,7 @@ const Navbar2 = () => {
     ];
 
     return (
-        <nav className="bg-white shadow-md w-full z-50 fixed">
+        <nav className=" shadow-md w-screen z-50 fixed bg-red-500">
             <header className="relative bg-white">
                 <div className="border-b border-gray-200">
                     <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 gap-11">

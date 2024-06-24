@@ -8,6 +8,10 @@ import Shop from "./components/Hero/Shop";
 import FeatureItem from "./components/Product/Featured";
 import ProductDetails from "./components/Product/ProductDetails";
 import Product from "./components/Product/Product";
+import Sidebar from "./components/Admin/Sidebar";
+import CreateProduct from "./components/Product/CreateProduct";
+import ProductList from "./components/Admin/ProductList";
+import CartPage from "./components/Cart/CartPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -15,8 +19,12 @@ function App() {
   return (
     <>
       <Navbar2 />
+
+      {/* <Sidebar /> */}
       <Routes>
         <Route path="/" element={<ClientLogin />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/admin" element={<CreateProduct />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="product/:category" element={<Product />} />
         <Route path="product/detail/:productId" element={<ProductDetails />} />

@@ -29,16 +29,6 @@ export default function Product() {
 
     const { loading, error, products } = useSelector((state) => state.product);
     const dispatch = useDispatch();
-
-    const handleCategoryChange = (option) => {
-        // Directly update state for selected category
-        setSelectedCategory(option.toLowerCase());
-    };
-
-    const handleSubCategoryChange = (option) => {
-        // Directly update state for selected subcategory
-        setSelectedSubCategory(option.toLowerCase());
-    };
     const priceChange = (event, newPrice) => {
         setPrice(newPrice);
     };
@@ -128,7 +118,7 @@ export default function Product() {
                     </div>
 
                     <div className="mx-auto max-w-2xl py-2 lg:max-w-7xl px-5 ">
-                        <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
+                        <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8 ">
                             <ProductCard products={products} />
                         </div>
                     </div>

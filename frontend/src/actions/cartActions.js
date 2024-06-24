@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 
 export const addToCart = createAsyncThunk('cart/Add', async (items, { rejectWithValue }) => {
     try {
-        console.log("thi is product action", items)
+        console.log("thi is product action  ", items)
         const response = await axiosInstance.post('cart/add', items)
         console.log("this is add cart response: ", response.data)
         return response.data

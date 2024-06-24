@@ -54,6 +54,7 @@ const getCart = catchAsyncError(async (req, res, next) => {
     if (!cart) {
         return next(new ApiError(404, "Cart not found"));
     }
+    console.log(cart)
     const cartItems = cart.products.map(item => ({
         productId: item.product._id,
         name: item.product.name,

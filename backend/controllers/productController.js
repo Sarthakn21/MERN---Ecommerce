@@ -9,6 +9,8 @@ import cloudinary from "cloudinary";
 const createProduct = catchAsyncError(async (req, res, next) => {
     const images = [];
     const { name, description, price, stock, mainCategory, subCategory } = req.body;
+    // console.log("in backedn", req.body)
+    // console.log("in backedn file", req.files)
     // console.log(req.body.size)
     if (!req.files || req.files.length === 0) {
         return next(new ApiError(401, "Images are required"));
@@ -38,6 +40,7 @@ const createProduct = catchAsyncError(async (req, res, next) => {
     };
 
     const product = await Product.create(req.body);
+    console.log(product)
     res.status(201).json({
         success: true,
         product,
@@ -47,7 +50,7 @@ const createProduct = catchAsyncError(async (req, res, next) => {
 //get all product by filters and pagination
 const getAllProducts = async (req, res, next) => {
     try {
-        
+
         const limit = req.query.limit ? req.query.limit : 10;
         const apiFeatures = new ApiFeatures(Product.find(), req.query)
             .search()
@@ -186,6 +189,16 @@ const getCategoryProduct = catchAsyncError(async (req, res, next) => {
     }
 });
 
+const AdminProducts = catchAsyncError(async (req, res, next) => {
+    console.log(req.user._id)
+    const products = await Product.find({ user: req.user._id });
+
+    res.status(200).json({
+        success: true,
+        products,
+    });
+});
 
 
-export { createProduct, getAllProducts, getProductById, deleteProduct, updateProduct, createReview, getAllReviews, getCategoryProduct };
+
+export { AdminProducts, createProduct, getAllProducts, getProductById, deleteProduct, updateProduct, createReview, getAllReviews, getCategoryProduct };

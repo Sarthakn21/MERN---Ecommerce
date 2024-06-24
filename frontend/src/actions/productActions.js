@@ -7,6 +7,7 @@ const axiosInstance = axios.create({
 });
 export const createProduct = createAsyncThunk('product/create', async (product, { rejectWithValue }) => {
     try {
+        console.log("inside create controler", product)
         const response = await axios.post('http://localhost:5000/api/v1/product/create', product, {
             withCredentials: true
         })
@@ -80,6 +81,15 @@ export const categoryWiseProduct = createAsyncThunk('product/categoryWiseProduct
     try {
         const { data } = await axiosInstance.get('product/getcategoryproduct')
         console.log(data)
+        return data
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+})
+export const adminproduct = createAsyncThunk("product/amdin", async (_, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.get('product/adminproduct')
+        console.log("admin data", data)
         return data
     } catch (error) {
         return rejectWithValue(error.response.data);

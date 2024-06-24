@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { loginUser, logoutUser, registerUser } from "../../slice/authSlice";
 import { getCurrentUser, loginUser, logoutUser, registerUser, updateProfile } from "../../actions/authActions";
-import { addReview, categoryWiseProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../../actions/productActions";
+import { addReview, adminproduct, categoryWiseProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../../actions/productActions";
 import { addToCart, deleteItem, getCart, updateCart } from "../../actions/cartActions";
 
 const ClientLogin = () => {
@@ -45,6 +45,7 @@ const ClientLogin = () => {
     //   }
     // ))
     // dispatch(deleteItem("66617e882f8760f497c651a1"))
+    // dispatch(adminproduct())
 
   };
 

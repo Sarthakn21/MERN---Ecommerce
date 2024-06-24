@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addReview, categoryWiseProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../actions/productActions";
+import { addReview, adminproduct, categoryWiseProduct, createProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../actions/productActions";
 
 
 const initialState = {
     totalProducts: 0,
     products: [],
+    success: false,
     loading: false,
     error: null,
 }
@@ -15,7 +16,6 @@ export const productSlice = createSlice({
         clearError: (state, action) => {
             // state.loading = false;
             state.error = null;
-            console.log(state)
         },
         removeProduct: (state, action) => {
             state.products = state.products.filter(product => product.id !== action.payload)
@@ -57,17 +57,20 @@ export const productSlice = createSlice({
             .addCase(deleteProduct.pending, (state, action) => {
                 state.loading = true;
                 state.error = null;
+                state.success = false;
             })
             .addCase(deleteProduct.fulfilled, (state, action) => {
                 state.loading = false;
                 state.products = state.products.filter(product => product._id !== action.payload.productId)
                 state.error = null;
                 state.totalProducts = state.totalProducts > 0 ? state.totalProducts - 1 : 0;
+                state.success = true;
 
             })
             .addCase(deleteProduct.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+                state.success = false;
             })
             .addCase(updateProduct.pending, (state, action) => {
                 state.loading = true;
@@ -123,6 +126,38 @@ export const productSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
                 state.totalProducts = state.products.length;
+            })
+            .addCase(createProduct.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+                state.success = false;
+            })
+            .addCase(createProduct.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                state.success = true;
+            })
+            .addCase(createProduct.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.success = false;
+            })
+            .addCase(adminproduct.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+                state.success = false;
+            })
+            .addCase(adminproduct.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                state.success = true;
+                state.products = action.payload.products;
+                state.totalProducts = action.payload.products.length;
+            })
+            .addCase(adminproduct.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.success = false;
             })
     }
 })
