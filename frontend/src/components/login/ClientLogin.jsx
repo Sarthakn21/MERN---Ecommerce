@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCurrentUser, loginUser, logoutUser, registerUser, updateProfile } from "../../actions/authActions";
 import { addReview, adminproduct, categoryWiseProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../../actions/productActions";
 import { addToCart, deleteItem, getCart, updateCart } from "../../actions/cartActions";
+import { Link, useNavigate } from "react-router-dom";
 
 const ClientLogin = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ const ClientLogin = () => {
   const [id, setId] = useState("");
   const { loading, error, message, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const product = {
     _id: "6660258e17f648e9e69a5ff7", // Assuming you have user._id accessible in your auth state
     name: "Addidas 130622"
@@ -50,10 +52,11 @@ const ClientLogin = () => {
   };
 
   useEffect(() => {
-    console.log("Message from Redux state:", user);
-    if (message) {
+    if (user) {
+      navigate("/")
     }
-  }, [message]);
+  }, [user]);
+
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -63,9 +66,9 @@ const ClientLogin = () => {
       >
         <div className="flex justify-between text-center">
           <h2 className="text-3xl font-bold mb-6 text-gray-800">Log In</h2>
-          <p className="h-full p-1 rounded-md underline text-gray-700">
+          <Link to={"/businesslogin"}><p className="h-full p-1 rounded-md underline text-gray-700">
             Business Login
-          </p>
+          </p></Link>
         </div>
 
         {loading && (
@@ -125,7 +128,7 @@ const ClientLogin = () => {
             </a>
             <a
               className="inline-block align-baseline text-sm text-gray-700 hover:text-blue-800"
-              href="#"
+              href="/register"
             >
               Don't have an account? Sign up now!
             </a>

@@ -1,24 +1,46 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import {
     Dialog,
     DialogPanel,
     Transition,
     TransitionChild,
 } from '@headlessui/react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 import { Bars3Icon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal } from "@mui/material";
+import { Stack } from "@mui/material";
+import { Typography, Box } from "@mui/material";
+import { logoutUser } from "../../actions/authActions";
+import { useSnackbar } from "notistack";
+import { authClearError } from "../../slice/authSlice";
 
 
 const Navbar2 = () => {
     const { loading, error, cartItems } = useSelector((state) => state.cart);
+    const { loading: authloading, error: authError, isAuthenticated, user } = useSelector((state) => state.auth);
     const [isOpen, setIsOpen] = useState(false);
     const [cartCount, setCartCount] = useState(0);
+    const [modalOpen, setModalOpen] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
+    const style = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        p: 4,
+        borderRadius: "15px",
+    };
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const navigation = [
         { name: "Home", href: "/" },
@@ -27,7 +49,22 @@ const Navbar2 = () => {
         { name: "Kids", href: "/product/kid" },
         { name: "Register", href: "/register" },
     ];
+    const handleModal = () => {
+        setModalOpen(!modalOpen);
+    }
+    const handleLogout = () => {
+        console.log("help ");
+        dispatch(logoutUser());
+        navigate("/");
+        // window.location.reload();
 
+    }
+    useEffect(() => {
+        if (authError) {
+            enqueueSnackbar("Error occurred while logging out", { variant: "error" });
+            dispatch(authClearError());
+        }
+    }, [authError, dispatch])
     return (
         <nav className=" shadow-md w-screen z-50 fixed bg-red-500">
             <header className="relative bg-white">
@@ -39,7 +76,7 @@ const Navbar2 = () => {
                         <div className="hidden md:flex items-center gap-5">
                             <div className=" flex flex-1 items-center justify-end space-x-6">
                                 {navigation.map((item, index) => (
-                                    <Link to={item.href} key={index} className="text-md font-medium text-gray-700 hover:text-gray-800">
+                                    <Link to={item.href} key={index} className="text-md font-medium text-gray-700 outline-none transition-all duration-100 ease-in-out hover:border-b-4 hover:text-rose-600 focus:border-b-4">
                                         {item.name}
                                     </Link>
                                 ))}
@@ -53,19 +90,19 @@ const Navbar2 = () => {
                                     placeholder="Search..."
                                 />
                             </div>
-                            <div className="hidden lg:flex flex-1 items-center justify-end space-x-6">
+                            {!isAuthenticated && <div className="hidden lg:flex flex-1 items-center justify-end space-x-6">
                                 <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                     Sign in
                                 </Link>
                                 <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                            </div>
+                            </div>}
                             <div className="flow-root px-2 py-1 mr-0">
                                 <a href="/cart" className="group -m-2 flex items-center p-2">
                                     <ShoppingBagIcon
                                         className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                         aria-hidden="true"
                                     />
-                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartItems.length}</span>
+                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{user ? cartItems.length : 0}</span>
 
                                 </a>
                             </div>
@@ -114,10 +151,31 @@ const Navbar2 = () => {
                                 </div>
                                 <div className="mt-2 ml-3 space-y-2">
                                     {navigation.map((item, index) => (
-                                        <Link to={item.href} key={index} className="-m-2 block p-2 text-gray-500">
+                                        <Link to={item.href} key={index} className="-m-2 block p-2 text-gray-500 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600 focus:border-l-4">
                                             {item.name}
                                         </Link>
                                     ))}
+                                    {isAuthenticated && <Button variant="contained" onClick={handleModal}>Logout</Button>}
+                                    <Modal
+                                        open={modalOpen}
+                                        onClose={handleModal}
+                                        aria-labelledby="modal-modal-title"
+                                        aria-describedby="modal-modal-description"
+                                    >
+                                        <Box sx={style}>
+                                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                                                Are you sure to Logout ?
+                                            </Typography>
+                                            <Stack spacing={2} direction="row" sx={{ marginTop: 3 }}>
+                                                <Button variant="contained" onClick={handleLogout}>
+                                                    Yes
+                                                </Button>
+                                                <Button variant="contained" onClick={handleModal}>
+                                                    No
+                                                </Button>
+                                            </Stack>
+                                        </Box>
+                                    </Modal>
                                 </div>
                             </DialogPanel>
                         </TransitionChild>

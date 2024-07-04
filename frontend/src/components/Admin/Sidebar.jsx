@@ -1,113 +1,246 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { Collapse } from '@mui/material';
-import ProfileIcon from '@mui/icons-material/AccountCircle';
-import SettingsIcon from '@mui/icons-material/Settings';
-import SearchIcon from '@mui/icons-material/Search';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import CollectionIcon from '@mui/icons-material/CollectionsTwoTone';
-import DashboardIcon from '@mui/icons-material/SpaceDashboardTwoTone';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCartTwoTone';
-import AssignmentIcon from '@mui/icons-material/AssignmentLateTwoTone';
-import CustomerIcon from '@mui/icons-material/GroupTwoTone';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/KeyboardArrowRight';
-import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-
+import CategoryIcon from '@mui/icons-material/Category';
+import AddIcon from '@mui/icons-material/Add';
+import FolderOpenOutlinedIcon from '@mui/icons-material/FolderOpenOutlined';
+import GradingOutlinedIcon from '@mui/icons-material/GradingOutlined';
+import ShoppingCartCheckoutOutlinedIcon from '@mui/icons-material/ShoppingCartCheckoutOutlined';
+import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 import { Bars3Icon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Avatar from '@mui/material/Avatar';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    Dialog,
+    DialogPanel,
+    Transition,
+    TransitionChild,
+} from '@headlessui/react';
+import { logoutUser } from '../../actions/authActions';
 
 const Sidebar = () => {
     const [openDropdown, setOpenDropdown] = useState(null);
-    const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-    const profileMenuRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
-
+    const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
-
-    const toggleProfileMenu = () => {
-        setProfileMenuOpen(!profileMenuOpen);
-    };
-
     const handleDropdownClick = (index) => {
         setOpenDropdown(openDropdown === index ? null : index);
     };
+    const handleLogout = () => {
+        dispatch(logoutUser())
+        navigate("/login");
 
-    const handleClickOutside = (event) => {
-        if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
-            setProfileMenuOpen(false);
-        }
-    };
+    }
+    return (<>
+        <div className='flex md:hidden py-2 '>
+            <button
+                id="menu-toggle"
+                className="w-screen px-3 py-2 shadow-lg"
+                onClick={toggleMenu}
+            >
+                <Bars3Icon className="w-6 h-6" aria-hidden="true" />
+            </button>
+            <Transition show={isOpen} as={Fragment}>
+                <Dialog as="div" className="relative z-50 " onClose={setIsOpen}>
+                    <TransitionChild
+                        enter="transition-opacity ease-linear duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="transition-opacity ease-linear duration-300"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <div className="fixed inset-0 bg-black bg-opacity-25" />
+                    </TransitionChild>
+                    <div className="fixed inset-0 z-40 flex">
+                        <TransitionChild
+                            enter="transition ease-in-out duration-300 transform"
+                            enterFrom="-translate-x-full"
+                            enterTo="translate-x-0"
+                            leave="transition ease-in-out duration-300 transform"
+                            leaveFrom="translate-x-0"
+                            leaveTo="-translate-x-full"
+                        >
+                            <DialogPanel className="relative flex w-2/4 max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
 
-    useEffect(() => {
-        if (profileMenuOpen) {
-            document.addEventListener('click', handleClickOutside, true);
-        } else {
-            document.removeEventListener('click', handleClickOutside, true);
-        }
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
-        };
-    }, [profileMenuOpen]);
+                                <div className="flex gap-5 mt-10 items-center px-4">
+                                    <Avatar
+                                        alt="Semy Sharp"
+                                        src="/static/images/avatar/1.jpg"
+                                        sx={{ width: 56, height: 56 }}
+                                    />
+                                    <h3 className="font-medium">{user.name}</h3>
+                                    <div className="flex ml-3 flex-col">
+                                    </div>
+                                </div>
 
-    return (
-        <>
-            <div className='md:hidden shadow-md w-full '>
-                <button
-                    id="menu-toggle"
-                    className="px-2 py-2 hover:bg-blue-50 rounded-md"
-                    onClick={toggleMenu}
+                                <span className="ml-3 mt-10 mb-2 block text-xs font-semibold text-gray-500">Options</span>
 
-                >
-                    <Bars3Icon className="w-6 h-6" aria-hidden="true" />
-                </button>
-            </div >
-            <div className={`${isOpen ? "" : "hidden"} transition-all duration-300 ease-in-out md:flex px-auto py-5 bg-slate-50 w-fit h-screen sticky top-0  justify-center items-center z-60`}>
-                <ul className="flex flex-col px-2 py-2 gap-4 ">
-                    <li className="sidebar-item">
-                        <Link to="/admin" className="flex gap-3">
-                            <DashboardIcon className="sidebar-icon" />
-                            Dashboard
-                        </Link>
-                    </li>
-                    <li>
-                        <div onClick={() => handleDropdownClick(2)} className="flex gap-3">
-                            <ShoppingCartIcon />
-                            Products
-                            {openDropdown === 2 ? <ExpandLessIcon className="dropdown-icon" /> : <ExpandMoreIcon className="dropdown-icon" />}
+                                <div className="flex mt-3 flex-1 flex-col">
+                                    <div className="">
+                                        <nav className="flex-1">
+                                            <Link to="/admin/dashboard"><div className="flex gap-5 relative w-full items-center py-3 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600 focus:border-l-4">
+                                                <span><CategoryIcon /></span>
+                                                Dashboard
+                                            </div></Link>
+
+                                            <div className="relative transition">
+                                                <button
+                                                    onClick={() => handleDropdownClick(1)}
+                                                    className="flex gap-5 relative w-full items-center py-3 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600 focus:border-l-4"
+                                                >
+                                                    <FolderOpenOutlinedIcon />
+                                                    Products
+                                                    {openDropdown === 1 ? <ExpandLessIcon className="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600" /> : <ExpandMoreIcon className="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600" />}
+                                                </button>
+                                                <Collapse in={openDropdown === 1} timeout="auto" unmountOnExit>
+                                                    <ul className="flex m-2 flex-col rounded-xl bg-gray-100 font-medium">
+                                                        <Link to="/admin/createproduct"><li className="flex  gap-2 m-2 cursor-pointer py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
+                                                            <span><AddIcon /></span>
+                                                            Create Product
+                                                        </li></Link>
+                                                        <Link to="/admin/productlist"><li className="flex gap-2 m-2 cursor-pointer py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
+                                                            <span><GradingOutlinedIcon /></span>
+                                                            view Products
+                                                        </li></Link>
+                                                    </ul>
+                                                </Collapse>
+                                            </div>
+                                            <div className="relative transition">
+                                                <button
+                                                    onClick={() => handleDropdownClick(2)}
+                                                    className="flex gap-5 relative w-full items-center py-3 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600 focus:border-l-4"
+                                                >
+                                                    <ShoppingCartCheckoutOutlinedIcon />
+                                                    Order
+                                                    {openDropdown === 1 ? <ExpandLessIcon className="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600" /> : <ExpandMoreIcon className="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600" />}
+                                                </button>
+                                                <Collapse in={openDropdown === 2} timeout="auto" unmountOnExit>
+                                                    <ul className="flex m-2 flex-col rounded-xl bg-gray-100 font-medium">
+                                                        <li className="flex  gap-2 m-2 cursor-pointer py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
+                                                            <span><PendingActionsOutlinedIcon /></span>
+                                                            Pending Orders
+                                                        </li>
+                                                        <li className="flex gap-2 m-2 cursor-pointer py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
+                                                            <span><GradingOutlinedIcon /></span>
+                                                            Completed Orders
+                                                        </li>
+                                                    </ul>
+                                                </Collapse>
+                                            </div>
+                                        </nav>
+
+                                        <span className="ml-3 mt-10 mb-2 block text-xs font-semibold text-gray-500">Product Management</span>
+
+                                        <nav className="flex-1">
+                                            <div className="flex  gap-5 cursor-pointer items-center py-2 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:border-l-rose-600 hover:text-rose-600 focus:border-l-4">
+                                                <SettingsIcon />
+                                                Settings
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </DialogPanel>
+                        </TransitionChild>
+                    </div>
+                </Dialog>
+            </Transition>
+        </div >
+        <div className="hidden md:flex w-fit bg-sky-100 sticky top-0">
+            <div className="h-screen w-64">
+                <div className="flex h-full flex-grow flex-col overflow-y-auto rounded-br-lg rounded-tr-lg  bg-slate-50 pt-5 shadow-md">
+                    <div className="flex gap-5 mt-10 items-center px-4">
+                        <Avatar
+                            alt="Semy Sharp"
+                            src="/static/images/avatar/1.jpg"
+                            sx={{ width: 56, height: 56 }}
+                        />
+                        <h3 className="font-medium">{user.name}</h3>
+                        <div className="flex ml-3 flex-col">
                         </div>
-                        <Collapse in={openDropdown === 2} timeout="auto" unmountOnExit>
-                            <ul className="pl-5 py-2">
-                                <li className="px-2 py-2 flex gap-3">
-                                    <Link to="/addproduct" className="sidebar-link">Add Product</Link>
-                                </li>
-                                <li className="px-2 py-2">
-                                    <Link to="/viewproducts" className="sidebar-link">View Products</Link>
-                                </li>
-                            </ul>
-                        </Collapse>
-                    </li>
-                    <li>
-                        <div onClick={() => handleDropdownClick(3)} className="flex gap-3">
-                            <AssignmentIcon />
-                            <button className="flex gap-3">Orders
-                                {openDropdown === 3 ? <span><ExpandLessIcon className="dropdown-icon" /></span> : <ExpandMoreIcon className="dropdown-icon" />}
-                            </button>
+                    </div>
+
+                    <span className="ml-3 mt-10 mb-2 block text-xs font-semibold text-gray-500">Options</span>
+
+                    <div className="flex mt-3 flex-1 flex-col">
+                        <div className="">
+                            <nav className="flex-1">
+                                <Link to="/admin/dashboard"><div className="flex gap-5 relative w-full items-center py-3 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600 focus:border-l-4">
+                                    <span><CategoryIcon /></span>
+                                    Dashboard
+                                </div></Link>
+
+                                <div className="relative transition">
+                                    <button
+                                        onClick={() => handleDropdownClick(1)}
+                                        className="flex gap-5 relative w-full items-center py-3 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600 focus:border-l-4"
+                                    >
+                                        <FolderOpenOutlinedIcon />
+                                        Products
+                                        {openDropdown === 1 ? <ExpandLessIcon className="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600" /> : <ExpandMoreIcon className="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600" />}
+                                    </button>
+                                    <Collapse in={openDropdown === 1} timeout="auto" unmountOnExit>
+                                        <ul className="flex m-2 flex-col rounded-xl bg-gray-100 font-medium">
+                                            <Link to="/admin/createproduct"><li className="flex  gap-2 m-2 cursor-pointer py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
+                                                <span><AddIcon /></span>
+                                                Create Product
+                                            </li></Link>
+                                            <Link to="/admin/productlist"><li className="flex gap-2 m-2 cursor-pointer py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
+                                                <span><GradingOutlinedIcon /></span>
+                                                view Products
+                                            </li></Link>
+                                        </ul>
+                                    </Collapse>
+                                </div>
+                                <div className="relative transition">
+                                    <button
+                                        onClick={() => handleDropdownClick(2)}
+                                        className="flex gap-5 relative w-full items-center py-3 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600 focus:border-l-4"
+                                    >
+                                        <ShoppingCartCheckoutOutlinedIcon />
+                                        Order
+                                        {openDropdown === 1 ? <ExpandLessIcon className="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600" /> : <ExpandMoreIcon className="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600" />}
+                                    </button>
+                                    <Collapse in={openDropdown === 2} timeout="auto" unmountOnExit>
+                                        <ul className="flex m-2 flex-col rounded-xl bg-gray-100 font-medium">
+                                            <li className="flex  gap-2 m-2 cursor-pointer py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
+                                                <span><PendingActionsOutlinedIcon /></span>
+                                                Pending Orders
+                                            </li>
+                                            <li className="flex gap-2 m-2 cursor-pointer py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
+                                                <span><GradingOutlinedIcon /></span>
+                                                Completed Orders
+                                            </li>
+                                        </ul>
+                                    </Collapse>
+                                </div>
+                            </nav>
+
+                            <span className="ml-3 mt-10 mb-2 block text-xs font-semibold text-gray-500">Product Management</span>
+
+                            <nav className="flex-1">
+                                <div className="flex  gap-5 cursor-pointer items-center py-2 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:border-l-rose-600 hover:text-rose-600 focus:border-l-4">
+                                    <SettingsIcon />
+                                    Settings
+                                </div>
+                                <div onClick={handleLogout} className="flex  gap-5 cursor-pointer items-center py-2 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:border-l-rose-600 hover:text-rose-600 focus:border-l-4">
+                                    <SettingsIcon />
+                                    Logout
+                                </div>
+                            </nav>
                         </div>
-                        <Collapse in={openDropdown === 3} timeout="auto" unmountOnExit>
-                            <ul className="pl-5 py-2">
-                                <button className="px-2 py-2 flex gap-3">All </button>
-                                <button className="px-2 py-2 flex gap-3">Pending </button>
-                            </ul>
-                        </Collapse>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
-        </>
+        </div >
+    </>
     );
 };
 

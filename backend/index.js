@@ -8,6 +8,7 @@ import errorHandlerMiddleware from "./middlewares/error.js";
 import userRouter from "./Routes/userRoute.js";
 import productRoute from "./Routes/productRoute.js";
 import cartRoute from "./Routes/cartRoute.js"
+import orderRoute from "./Routes/orderRoute.js"
 
 const app = express();
 const corsOptions = {
@@ -23,24 +24,10 @@ app.use(cookieParser());
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/product', productRoute)
 app.use('/api/v1/cart', cartRoute)
+app.use('/api/v1/order', orderRoute)
 
 app.use(express.static("public"));
 connectToDatabse();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 3000;

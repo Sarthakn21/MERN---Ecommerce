@@ -18,6 +18,7 @@ const filters = [
 ]
 
 export default function Product() {
+    const [searchKeyword, setSearchKeyword] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
     const [price, setPrice] = useState([0, 25000]);
@@ -32,13 +33,18 @@ export default function Product() {
     const priceChange = (event, newPrice) => {
         setPrice(newPrice);
     };
+    const handleSearch = () => {
+        dispatch(getAllProducts({
+            keyword: searchKeyword,
+        }));
+    }
     useEffect(() => {
         if (error && error.statusCode) {
             enqueueSnackbar(error.message, { variant: "error" });
             dispatch(clearError());
         }
     }, [error, enqueueSnackbar, dispatch]);
-
+    // console.log(selectedSubCategory)
     useEffect(() => {
         dispatch(getAllProducts({
             category,
@@ -115,6 +121,22 @@ export default function Product() {
                                 max={25000}
                             />
                         </div>
+                        <div className="mb-6 flex">
+                            <input
+                                type="text"
+                                placeholder="Search products"
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                className="border rounded-l px-4 py-2 w-full"
+                            />
+                            <button
+                                onClick={handleSearch}
+                                className="bg-indigo-600 text-white px-4 py-2 rounded-r"
+                            >
+                                Search
+                            </button>
+                        </div>
+
                     </div>
 
                     <div className="mx-auto max-w-2xl py-2 lg:max-w-7xl px-5 ">

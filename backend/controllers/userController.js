@@ -6,12 +6,22 @@ import cloudinary from "cloudinary";
 const registerUser = catchAsyncError(async (req, res, next) => {
     const avatarLocalPath = req.file?.path;
     // const myCloud = await uploadOnCloudinary(avatarLocalPath, "avatar");
-    const { name, email, password } = req.body;
-    const user = await User.create({
-        name,
-        email,
-        password,
-    });
+    const { name, email, password, role } = req.body;
+    var user;
+    if (role) {
+        user = await User.create({
+            name,
+            email,
+            password,
+            role,
+        });
+    } else {
+        user = await User.create({
+            name,
+            email,
+            password,
+        });
+    }
     const accessToken = await user.getJWTToken();
     const userWithoutPassword = await User.findById(user._id).select('-password');
     return res

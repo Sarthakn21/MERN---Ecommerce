@@ -14,7 +14,12 @@ const saveStateLS = (state) => {
 export const cartSlice = createSlice({
     name: "cart",
     initialState,
-    reducers: {},
+    reducers: {
+        clearError: (state, action) => {
+            // state.loading = false;
+            state.error = null;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(addToCart.fulfilled, (state, action) => {
@@ -44,6 +49,7 @@ export const cartSlice = createSlice({
             })
             .addCase(getCart.rejected, (state, action) => {
                 state.error = action.payload;
+                // console.log(action)
                 state.loading = false;
                 state.CartSuccess = false;
             })
@@ -83,4 +89,5 @@ export const cartSlice = createSlice({
             })
     }
 })
+export const { clearError } = cartSlice.actions;
 export default cartSlice.reducer;

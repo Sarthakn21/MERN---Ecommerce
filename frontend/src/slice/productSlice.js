@@ -16,10 +16,15 @@ export const productSlice = createSlice({
         clearError: (state, action) => {
             // state.loading = false;
             state.error = null;
+            state.success = false;
         },
         removeProduct: (state, action) => {
             state.products = state.products.filter(product => product.id !== action.payload)
-        }
+        },
+        resetSuccess: (state, action) => {
+            state.success = false;
+            console.log("state", state)
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -161,5 +166,5 @@ export const productSlice = createSlice({
             })
     }
 })
-export const { clearError, removeProduct } = productSlice.actions;
+export const { clearError, removeProduct, resetSuccess } = productSlice.actions;
 export default productSlice.reducer;

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
+    getAllUsers,
     getCurrentUser,
     loginUser,
     logoutUser,
@@ -11,6 +12,7 @@ import {
 const localItem = localStorage.getItem("authUser");
 const initialState = {
     user: localItem ? JSON.parse(localItem) : null,
+    adminuser: [],
     isAuthenticated: localItem ? true : false,
     loading: false,
     error: null,
@@ -19,7 +21,13 @@ const initialState = {
 export const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        authClearError: (state, action) => {
+            // state.loading = false;
+            state.error = null;
+            state.success = false;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.pending, (state) => {
@@ -74,6 +82,7 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.message = action.payload.message;
+                localStorage.setItem("authUser", JSON.stringify(action.payload));
                 // console.log("in register user fulfilled state")
             })
             .addCase(registerUser.rejected, (state, action) => {
@@ -123,7 +132,23 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.message = action.payload.message;
             })
+            .addCase(getAllUsers.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+                state.message = null;
+            })
+            .addCase(getAllUsers.fulfilled, (state, action) => {
+                state.adminuser = action.payload;
+                state.loading = false;
+                state.error = null;
+                state.message = null;
+            })
+            .addCase(getAllUsers.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+                state.message = "fetched all users";
+            })
     },
 });
-export const { } = authSlice.actions;
+export const { authClearError } = authSlice.actions;
 export default authSlice.reducer;

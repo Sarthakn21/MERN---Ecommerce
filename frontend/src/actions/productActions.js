@@ -27,7 +27,7 @@ export const getAllProducts = createAsyncThunk('product/getAll', async (filters,
         } = filters;
         let url = `http://localhost:5000/api/v1/product/getproducts?mainCategory=${category}s&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`
         if (keyword) {
-            url += `&keyword=${keyword}`
+            url = `http://localhost:5000/api/v1/product/getproducts?keyword=${keyword}`
         }
         if (subcategory) {
             url += `&subCategory=${subcategory}`
@@ -86,10 +86,10 @@ export const categoryWiseProduct = createAsyncThunk('product/categoryWiseProduct
         return rejectWithValue(error.response.data);
     }
 })
-export const adminproduct = createAsyncThunk("product/amdin", async (_, { rejectWithValue }) => {
+export const adminproduct = createAsyncThunk("adminProducts", async (_, { rejectWithValue }) => {
     try {
         const { data } = await axiosInstance.get('product/adminproduct')
-        console.log("admin data", data)
+
         return data
     } catch (error) {
         return rejectWithValue(error.response.data);

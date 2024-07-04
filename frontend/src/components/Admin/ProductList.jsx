@@ -12,6 +12,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import { clearError, resetSuccess } from '../../slice/productSlice';
+import { enqueueSnackbar, useSnackbar } from 'notistack';
 
 const columns = [
     { field: 'id', headerName: 'ID', flex: 0.1 },
@@ -51,8 +54,9 @@ const columns = [
 ];
 
 export default function ProductList() {
-    const { products } = useSelector((state) => state.product);
+    const { products, success } = useSelector((state) => state.product);
     const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
 
     const rows = products.map((product, index) => ({
         id: index + 1,
@@ -68,32 +72,48 @@ export default function ProductList() {
 
     useEffect(() => {
         dispatch(adminproduct())
+        dispatch(resetSuccess());
+
     }, [dispatch]);
+    useEffect(() => {
+        if (success) {
+            enqueueSnackbar("Operation successful", { variant: 'success' });
+            dispatch(resetSuccess());
+        }
+    }, [success, dispatch, enqueueSnackbar]);
 
     return (
-        <Box sx={{ height: "fit-content", width: '100%' }}>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: {
-                            pageSize: 10,
-                        },
-                    },
-                }}
-                pageSizeOptions={[10]}
-                disableSelectionOnClick
-                sx={{
-                    '& .MuiDataGrid-cell': {
-                        justifyContent: 'flex-start',
-                    },
-                    '& .MuiDataGrid-columnHeader': {
-                        justifyContent: 'flex-start',
-                        backgroundColor: 'skyblue',
-                    },
-                }}
-            />
-        </Box>
+        <div className='flex flex-col md:flex-row w-screen gap-1'>
+            <div>
+                <Sidebar />
+
+            </div>
+            <div className='w-screen'>
+                <Box sx={{ height: "fit-content", width: '100%', padding: "20px" }}>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: {
+                                    pageSize: 10,
+                                },
+                            },
+                        }}
+                        pageSizeOptions={[10]}
+                        disableSelectionOnClick
+                        sx={{
+                            '& .MuiDataGrid-cell': {
+                                justifyContent: 'flex-start',
+                            },
+                            '& .MuiDataGrid-columnHeader': {
+                                justifyContent: 'flex-start',
+                                backgroundColor: 'skyblue',
+                            },
+                        }}
+                    />
+                </Box>
+            </div>
+        </div>
     );
 }

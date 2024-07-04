@@ -56,3 +56,17 @@ export const updateProfile = createAsyncThunk('updateProfile', async (data, { re
         return rejectWithValue(error.response.data)
     }
 })
+export const getAllUsers = createAsyncThunk('getAllUsers', async (_, { rejectWithValue }) => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/v1/users/getalluser', {
+            withCredentials: true
+        })
+        console.log("all users response", response.data.users)
+        return response.data.users
+
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+
+    }
+
+})

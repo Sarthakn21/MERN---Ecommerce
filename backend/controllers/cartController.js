@@ -7,7 +7,7 @@ import { ApiError } from "../utils/APIError.js";
 const addToCart = catchAsyncError(async (req, res, next) => {
     const { productId } = req.body;
     const quantity = 1;
-    let productIndex = 0;
+
     if (!productId) {
         return next(new ApiError(400, "Product ID and quantity are required"));
     }
@@ -16,37 +16,45 @@ const addToCart = catchAsyncError(async (req, res, next) => {
     if (!product) {
         return next(new ApiError(404, "Product not found"));
     }
-    if (product && product.stock <= 0) {
+    if (product.stock <= 0) {
         return next(new ApiError(404, "Product is out of stock"));
     }
 
     let cart = await Cart.findOne({ user: req.user._id });
 
+    let addedProduct;
     if (!cart) {
         cart = new Cart({ user: req.user._id, products: [{ product: productId, quantity }] });
+        addedProduct = cart.products[0];
     } else {
-        productIndex = cart.products.findIndex(p => p.product.toString() === productId);
+        const productIndex = cart.products.findIndex(p => p.product.toString() === productId);
         if (productIndex > -1) {
             cart.products[productIndex].quantity += 1;
+            addedProduct = cart.products[productIndex];
         } else {
             cart.products.push({ product: productId, quantity });
+            addedProduct = cart.products[cart.products.length - 1];
         }
     }
+
     await cart.populate('products.product', 'name price images ratings');
     await cart.save();
-    const addedProduct = {
-        productId: cart.products[productIndex].product._id,
-        name: cart.products[productIndex].product.name,
-        price: cart.products[productIndex].product.price,
-        ratings: cart.products[productIndex].product.ratings,
-        images: cart.products[productIndex].product.images,
-        quantity: cart.products[productIndex].quantity,
+
+    const responseProduct = {
+        productId: addedProduct.product._id,
+        name: addedProduct.product.name,
+        price: addedProduct.product.price,
+        ratings: addedProduct.product.ratings,
+        images: addedProduct.product.images,
+        quantity: addedProduct.quantity,
     };
+
     res.status(201).json({
         success: true,
-        addedProduct,
+        addedProduct: responseProduct,
     });
 });
+
 
 // Get all cart products for a user
 const getCart = catchAsyncError(async (req, res, next) => {
@@ -54,7 +62,7 @@ const getCart = catchAsyncError(async (req, res, next) => {
     if (!cart) {
         return next(new ApiError(404, "Cart not found"));
     }
-    console.log(cart)
+    // console.log(cart)
     const cartItems = cart.products.map(item => ({
         productId: item.product._id,
         name: item.product.name,
