@@ -16,39 +16,55 @@ import SellerRegister from "./components/login/SellerRegister";
 import Checkout from "./components/Checkout/Checkout";
 import { useSelector } from "react-redux";
 
-
 function App() {
   const [count, setCount] = useState(0);
-  const { user } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
-
-    console.log(user)
-  }, [])
+    console.log(user);
+  }, []);
 
   return (
     <>
-      {user && user.role == "admin" ? ("") : (<Navbar2 />)}
+      {user && user.role == "admin" ? "" : <Navbar2 />}
 
       {/* <Sidebar /> */}
       <Routes>
-        {user && user.role == "admin" ? (<Route path="/" element={<Dashboard />} />) : (<Route path="/" element={<HeroSection />} />)}
+        {user && user.role == "admin" ? (
+          <Route path="/" element={<Dashboard />} />
+        ) : (
+          <Route path="/" element={<HeroSection />} />
+        )}
         <Route path="/login" element={<ClientLogin />} />
         <Route path="/register" element={<Register />} />
-        {user && user.role == "admin" ? (<Route path="/sellerregister" element={<SellerRegister />} />) : (<Route path="/sellerregister" element={<HeroSection />} />)}
-        {user && user.role == "admin" ? (<Route path="/admin/createproduct" element={<CreateProduct />} />) : (<Route path="/admin/createproduct" element={<HeroSection />} />)}
+        {user && user.role == "admin" ? (
+          <Route path="/sellerregister" element={<SellerRegister />} />
+        ) : (
+          <Route path="/sellerregister" element={<HeroSection />} />
+        )}
+        {user && user.role == "admin" ? (
+          <Route path="/admin/createproduct" element={<CreateProduct />} />
+        ) : (
+          <Route path="/admin/createproduct" element={<HeroSection />} />
+        )}
         <Route path="/admin/productlist" element={<ProductList />} />
-        {user && user.role == "admin" ? (<Route path="/admin/dashboard" element={<Dashboard />} />) : (<Route path="/admin/dashboard" element={<HeroSection />} />)}
+        {user && user.role == "admin" ? (
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+        ) : (
+          <Route path="/admin/dashboard" element={<HeroSection />} />
+        )}
         <Route path="/shop" element={<Shop />} />
         <Route path="product/:category" element={<Product />} />
         <Route path="product/detail/:productId" element={<ProductDetails />} />
-        {user ? (<Route path="/cart" element={<CartPage />} />) : (<Route path="/cart" element={<HeroSection />} />)}
+        {user ? (
+          <Route path="/cart" element={<CartPage />} />
+        ) : (
+          <Route path="/cart" element={<HeroSection />} />
+        )}
         <Route path="/checkout" element={<Checkout />} />
-
       </Routes>
       {/* <ProductDetails />
       <Example /> */}
       {/* <FeatureItem /> */}
-
     </>
   );
 }
